@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_color_2"
+    android:background="@drawable/background_color"
     tools:context=".UserActivity">
 
     <EditText
@@ -49,7 +49,7 @@
         android:layout_width="330dp"
         android:layout_height="49dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="268dp"
+        android:layout_marginTop="352dp"
         android:layout_marginEnd="41dp"
         android:backgroundTint="@color/common_google_signin_btn_text_dark_disabled"
         android:text="Go to Channel 1"
@@ -57,5 +57,24 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcome_msg" />
+
+    <TextView
+        android:id="@+id/current_build_textview"
+        android:layout_width="133dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="264dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="41dp"
+        android:layout_marginBottom="70dp"
+        android:text="See current build"
+        android:textAlignment="gravity"
+        android:textAllCaps="false"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.074"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groupchat_btn_1"
+        app:layout_constraintVertical_bias="0.77" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

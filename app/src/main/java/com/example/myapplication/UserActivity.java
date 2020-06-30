@@ -7,6 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,6 +33,7 @@ public class UserActivity extends AppCompatActivity {
     private DatabaseReference FdbRef;
     private Button logout_btn,channelbtn_1;
     private TextView welcome_box;
+    //private TextView current_build;
     //private String welcome_string;
     //private RecyclerView userList;
 
@@ -47,12 +52,26 @@ public class UserActivity extends AppCompatActivity {
         //userList.hasFixedSize();
         //userList.setLayoutManager(new LinearLayoutManager(this));
 
+        TextView current_build=findViewById(R.id.current_build_textview);
+        String currentBuild="See current build";
+        SpannableString buildSpan= new SpannableString(currentBuild);
+        ClickableSpan clickable = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                startActivity(new Intent(UserActivity.this, CurrentBuild.class));
+            }
+        };
+        buildSpan.setSpan(clickable,4, 11, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        current_build.setText(buildSpan);
+        current_build.setMovementMethod(LinkMovementMethod.getInstance());
+
         FdbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String name=dataSnapshot.getValue().toString();
                 String disp="Welcome, "+name;
                 welcome_box.setText(disp);
+
             }
 
             @Override
@@ -80,7 +99,7 @@ public class UserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent Channel1=new Intent(UserActivity.this, ChannelActivity_One.class);
                 startActivity(Channel1);
-                finish();
+                //finish();
             }
         });
     }

@@ -22,46 +22,49 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/display_msg_box"
-        android:layout_width="405dp"
-        android:layout_height="453dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="4dp"
-        android:background="@drawable/round_corner"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Channel_one_textview" />
-
-    <TextView
-        android:id="@+id/input_text_msg"
-        android:layout_width="397dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="7dp"
-        android:background="@drawable/round_corner"
-        android:hint="Enter your message"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/display_msg_box" />
-
     <Button
         android:id="@+id/msg_send_btn"
         android:layout_width="69dp"
         android:layout_height="29dp"
         android:layout_marginStart="336dp"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="7dp"
+        android:layout_marginBottom="48dp"
         android:backgroundTint="?android:attr/textColorSecondaryInverse"
         android:text="send"
         android:textSize="8sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_text_msg" />
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintVertical_bias="0.421" />
+
+    <ListView
+        android:id="@+id/list_view_msg"
+        android:layout_width="409dp"
+        android:layout_height="495dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Channel_one_textview" />
+
+    <EditText
+        android:id="@+id/input_text_msg"
+        android:layout_width="337dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="75dp"
+        android:layout_marginBottom="135dp"
+        android:ems="10"
+        android:hint="Enter a message"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_view_msg"
+        app:layout_constraintVertical_bias="0.6" />
 </androidx.constraintlayout.widget.ConstraintLayout>
