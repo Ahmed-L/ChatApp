@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 user=username.getText().toString();
                 pass=password.getText().toString();
                 Fdb=FirebaseAuth.getInstance();
+
                 if((!user.isEmpty()&&(!pass.isEmpty())))
                 {
                     Fdb.signInWithEmailAndPassword(user,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -62,7 +64,10 @@ public class MainActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful())
                             {
-                                startActivity(new Intent(MainActivity.this,UserActivity.class));
+                                Intent loginIntent=new Intent(MainActivity.this, UserActivity.class);
+                                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(loginIntent);
+                                finish();
                             }
                             else
                             {

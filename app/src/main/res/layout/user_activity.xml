@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_color_2"
     tools:context=".UserActivity">
 
     <EditText
@@ -12,6 +13,7 @@
         android:layout_height="47dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:background="@color/common_google_signin_btn_text_dark_disabled"
         android:ems="10"
         android:hint="Search"
         android:inputType="textPersonName"
@@ -28,4 +30,32 @@
         app:layout_constraintHorizontal_bias="0.578"
         app:layout_constraintStart_toEndOf="@+id/SearchBox"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/welcome_msg"
+        android:layout_width="212dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="178dp"
+        android:text="Welcome, user"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SearchBox" />
+
+    <Button
+        android:id="@+id/groupchat_btn_1"
+        android:layout_width="330dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="268dp"
+        android:layout_marginEnd="41dp"
+        android:backgroundTint="@color/common_google_signin_btn_text_dark_disabled"
+        android:text="Go to Channel 1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_msg" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
