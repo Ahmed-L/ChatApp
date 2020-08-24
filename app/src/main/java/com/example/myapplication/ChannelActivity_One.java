@@ -5,9 +5,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,7 +32,7 @@ public class ChannelActivity_One extends AppCompatActivity {
     FirebaseAuth Fdb;
     DatabaseReference FdbRef;
     DatabaseReference chatnode;
-    private TextView sendText;
+    private EditText sendText;
     private String displaystring,sendstring,username,FinalMsgtoDB,FinalMsgfromDB;
     private Button sendbtn;
     private int messageCount;
@@ -50,6 +52,7 @@ public class ChannelActivity_One extends AppCompatActivity {
         sendbtn=findViewById(R.id.msg_send_btn);
         listView.setAdapter(arrayAdapter);
 
+
         //chatnode
         chatnode=FirebaseDatabase.getInstance().getReference().child("messages");
         chatnode.addChildEventListener(new ChildEventListener() {
@@ -60,22 +63,34 @@ public class ChannelActivity_One extends AppCompatActivity {
                 String nameofUser=messages.getUsername();
                 arrayList.add(nameofUser+": "+msg);
                 arrayAdapter.notifyDataSetChanged();
+                final Handler handler = new Handler();
+//100ms wait to scroll to item after applying changes
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        listView.smoothScrollToPosition(listView.getAdapter().getCount());
+                    }}, 20);
+                //listView.smoothScrollToPositionFromTop(listView.getAdapter().getCount()-1,0);
+                //listView.setSelection(listView.getChildCount()-1);
                 //displayText.setText("\n"+nameofUser+": "+msg);
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 arrayAdapter.notifyDataSetChanged();
+                listView.setSelection(listView.getAdapter().getCount()-1);
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 arrayAdapter.notifyDataSetChanged();
+                listView.setSelection(listView.getAdapter().getCount()-1);
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 arrayAdapter.notifyDataSetChanged();
+                listView.setSelection(listView.getAdapter().getCount()-1);
             }
 
             @Override
