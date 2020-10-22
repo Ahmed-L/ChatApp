@@ -3,19 +3,21 @@ package com.example.myapplication;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -24,8 +26,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChannelActivity_One extends AppCompatActivity {
 
@@ -36,21 +41,28 @@ public class ChannelActivity_One extends AppCompatActivity {
     private String displaystring,sendstring,username,FinalMsgtoDB,FinalMsgfromDB;
     private Button sendbtn;
     private int messageCount;
-    private ListView listView;
-    ArrayList<String> arrayList = new ArrayList<>();
-    //private FirebaseRecyclerAdapter<FriendlyMessage, MessageViewHolder> mFirebaseAdapter;
+    private RecyclerView recyclerView;
+    private MyAdapter adapter;
+    private List<Messages> messagesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channel__one);
 
-        listView=findViewById(R.id.list_view_msg);
-        //arrayList=findViewById(R.id.list_view_msg);
-        final ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(ChannelActivity_One.this, android.R.layout.simple_list_item_1, arrayList);
+        recyclerView=(RecyclerView)findViewById(R.id.recycler);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        messagesList=new ArrayList<>();
+
         sendText=findViewById(R.id.input_text_msg);
         sendbtn=findViewById(R.id.msg_send_btn);
-        listView.setAdapter(arrayAdapter);
+        adapter = new MyAdapter(messagesList);
+
+        //testing...
+        adapter = new MyAdapter(messagesList);
+        recyclerView.setAdapter(adapter);
+
 
 
         //chatnode
@@ -61,36 +73,38 @@ public class ChannelActivity_One extends AppCompatActivity {
                 Messages messages=dataSnapshot.getValue(Messages.class);
                 String msg=messages.getTextMessage();
                 String nameofUser=messages.getUsername();
-                arrayList.add(nameofUser+": "+msg);
-                arrayAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
+                Messages m=dataSnapshot.getValue(Messages.class);
+                messagesList.add(m);
                 final Handler handler = new Handler();
-//100ms wait to scroll to item after applying changes
+                //100ms wait to scroll to item after applying changes
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        listView.smoothScrollToPosition(listView.getAdapter().getCount());
+                        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
                     }}, 20);
-                //listView.smoothScrollToPositionFromTop(listView.getAdapter().getCount()-1,0);
-                //listView.setSelection(listView.getChildCount()-1);
                 //displayText.setText("\n"+nameofUser+": "+msg);
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                arrayAdapter.notifyDataSetChanged();
-                listView.setSelection(listView.getAdapter().getCount()-1);
+                adapter.notifyDataSetChanged();
+                //arrayAdapter.notifyDataSetChanged();
+                //listView.setSelection(listView.getAdapter().getCount()-1);
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                arrayAdapter.notifyDataSetChanged();
-                listView.setSelection(listView.getAdapter().getCount()-1);
+                adapter.notifyDataSetChanged();
+                //arrayAdapter.notifyDataSetChanged();
+                //listView.setSelection(listView.getAdapter().getCount()-1);
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                arrayAdapter.notifyDataSetChanged();
-                listView.setSelection(listView.getAdapter().getCount()-1);
+                //adapter.notifyDataSetChanged();
+                //arrayAdapter.notifyDataSetChanged();
+                //listView.setSelection(listView.getAdapter().getCount()-1);
             }
 
             @Override
@@ -98,7 +112,6 @@ public class ChannelActivity_One extends AppCompatActivity {
 
             }
         });
-
 
         //Fdb
         Fdb=FirebaseAuth.getInstance();
@@ -126,27 +139,19 @@ public class ChannelActivity_One extends AppCompatActivity {
 
                 //fetch msg from txtbox
                 sendstring=sendText.getText().toString();
-                FirebaseDatabase.getInstance().getReference().child("messages").push().setValue(new Messages(username,sendstring));
-                sendText.setText("");
-
-
+                if(sendstring.isEmpty())
+                {
+                    sendText.requestFocus();
+                }
+                else
+                {
+                    FirebaseDatabase.getInstance().getReference().child("messages").push().setValue(new Messages(username,sendstring));
+                    sendText.setText("");
+                }
             }
         });
     }
 
-    /*void displayChatMessages()
-    {
-        chatnode.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-               // Messages messages=dataSnapshot.getValue(Messages.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.out.println("Fetch messaeg failed.");
-            }
-        });
-    } */
 }
+
+

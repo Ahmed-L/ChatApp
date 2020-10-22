@@ -21,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SignUpActivity extends AppCompatActivity {
 
 
-    private EditText username2, password2,Realusername;
+    private EditText username2, password2,realUserName;
     private Button btn2;
     private FirebaseAuth Fdb;
     private DatabaseReference FdbRef;
@@ -33,7 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
         btn2=findViewById(R.id.signin_btn);
         username2=findViewById(R.id.Username_box2);
         password2=findViewById(R.id.password_box2);
-        Realusername=findViewById(R.id.RealUsernameBox);
+        realUserName=findViewById(R.id.RealUsernameBox);
 
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
                 Fdb=FirebaseAuth.getInstance();
                 username=username2.getText().toString();
                 pass=password2.getText().toString();
-                Realusername_string=Realusername.getText().toString();
+                Realusername_string=realUserName.getText().toString();
 
                 if(username.isEmpty() || pass.isEmpty())
                 {
@@ -86,10 +86,23 @@ public class SignUpActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful())
                                         {
-                                            Intent signupIntent=new Intent(SignUpActivity.this, UserActivity.class);
-                                            signupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(signupIntent);
-                                            finish();
+                                            //Intent signupIntent=new Intent(SignUpActivity.this, UserActivity.class);
+                                            //signupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            //startActivity(signupIntent);
+                                            //finish();
+                                            Fdb.signInWithEmailAndPassword(username,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    if(task.isSuccessful())
+                                                    {
+                                                        MainActivity.userState=1;
+                                                        Intent loginIntent=new Intent(SignUpActivity.this, UserActivity.class);
+                                                        loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(loginIntent);
+                                                        finish();
+                                                    }
+                                                }
+                                            });
                                         }
                                         else
                                         {

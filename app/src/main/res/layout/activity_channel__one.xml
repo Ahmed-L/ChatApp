@@ -1,18 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_color_2"
+    android:background="?attr/colorBackgroundFloating"
     tools:context=".ChannelActivity_One">
+
+    <EditText
+        android:id="@+id/input_text_msg"
+        android:layout_width="337dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="7dp"
+        android:layout_toStartOf="@+id/msg_send_btn"
+        android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+        android:ems="10"
+        android:focusable="true"
+        android:hint="Enter a message"
+        android:inputType="textPersonName"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/common_google_signin_btn_text_light_focused"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="236dp" />
+
+    <Button
+        android:id="@+id/msg_send_btn"
+        android:layout_width="53dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:drawable/ic_dialog_email"
+        android:backgroundTint="?android:attr/textColorPrimary"
+        android:textSize="8sp"
+        tools:layout_editor_absoluteX="619dp"
+        tools:layout_editor_absoluteY="260dp" />
 
     <TextView
         android:id="@+id/Channel_one_textview"
-        android:layout_width="409dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:background="#3F51B5"
         android:text="Channel 1"
         android:textAlignment="center"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
@@ -20,51 +55,17 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteY="1dp" />
 
-    <Button
-        android:id="@+id/msg_send_btn"
-        android:layout_width="69dp"
-        android:layout_height="29dp"
-        android:layout_marginStart="336dp"
-        android:layout_marginEnd="7dp"
-        android:layout_marginBottom="48dp"
-        android:backgroundTint="?android:attr/textColorSecondaryInverse"
-        android:text="send"
-        android:textSize="8sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
-        app:layout_constraintVertical_bias="0.421" />
-
-    <ListView
-        android:id="@+id/list_view_msg"
-        android:layout_width="409dp"
-        android:layout_height="495dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Channel_one_textview" />
-
-    <EditText
-        android:id="@+id/input_text_msg"
-        android:layout_width="337dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="75dp"
-        android:layout_marginBottom="135dp"
-        android:ems="10"
-        android:hint="Enter a message"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_view_msg"
-        app:layout_constraintVertical_bias="0.6" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/input_text_msg"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="-4dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="10dp"
+        android:focusable="auto" />
+</RelativeLayout>

@@ -1,25 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="115dp"
-        android:layout_height="115dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        tools:srcCompat="@drawable/personavatar_anime" />
+    android:id="@+id/constraint_layou_des"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/nameview"
-        android:layout_width="76dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="130px"
+        android:id="@+id/message_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/chat_bubble"
+        android:backgroundTint="#B3C3D5"
+        android:fontFamily="sans-serif-medium"
+        android:padding="10dp"
         android:text="TextView"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
-        android:textSize="18sp" />
+        android:textAlignment="center"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/Name_des" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/date_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="32dp"
+        android:text="TextView"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/message_des" />
+
+    <TextView
+        android:id="@+id/Name_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-black"
+        android:text="TextView"
+        android:textColor="#DC000428"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageView"
+        android:layout_width="104dp"
+        android:layout_height="106dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/icon_icon_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,6 +33,7 @@ public class UserActivity extends AppCompatActivity {
     private DatabaseReference FdbRef;
     private Button logout_btn,channelbtn_1;
     private TextView welcome_box;
+    private FirebaseAuth.AuthStateListener fdbListener;
     //private TextView current_build;
     //private String welcome_string;
     //private RecyclerView userList;
@@ -51,6 +52,7 @@ public class UserActivity extends AppCompatActivity {
         //userList=(RecyclerView)findViewById(R.id.RecyclerView_one);
         //userList.hasFixedSize();
         //userList.setLayoutManager(new LinearLayoutManager(this));
+
 
         TextView current_build=findViewById(R.id.current_build_textview);
         String currentBuild="See current build";
@@ -80,10 +82,6 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-        if(currentUser==null)
-        {
-            gotoMainMenu();
-        }
 
         //Recycler View
 
@@ -91,6 +89,8 @@ public class UserActivity extends AppCompatActivity {
         logout_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.userState=0;
+                FirebaseAuth.getInstance().signOut();
                 gotoMainMenu();
             }
         });
@@ -102,6 +102,18 @@ public class UserActivity extends AppCompatActivity {
                 //finish();
             }
         });
+
+
+    }
+
+    @Override
+    public void onStart() {
+
+        super.onStart();
+        Fdb=FirebaseAuth.getInstance();
+        currentUser=Fdb.getCurrentUser();
+        if(currentUser==null)
+            gotoMainMenu();
     }
 
     public void gotoMainMenu()
