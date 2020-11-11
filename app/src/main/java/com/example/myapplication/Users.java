@@ -1,15 +1,14 @@
 package com.example.myapplication;
 
+import com.google.firebase.firestore.auth.User;
+
 public class Users {
     private String name;
     private String status;
     private String image;
-    //String msg;
+
     Users()
     {
-        name="EmptyUser";
-        status="No status";
-        image="Default";
 
     }
 

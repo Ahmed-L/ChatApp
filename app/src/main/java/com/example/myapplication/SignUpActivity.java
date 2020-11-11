@@ -68,10 +68,10 @@ public class SignUpActivity extends AppCompatActivity {
                                 FirebaseUser user_now=FirebaseAuth.getInstance().getCurrentUser();
                                 String userDB_ID=user_now.getUid();
 
-                                Users user=new Users(userDB_ID, "No status yet! Why not add one?", "Default");
+                                Users user=new Users(Realusername_string, "No status yet! Why not add one?", "Default");
 
                                 FdbRef= FirebaseDatabase.getInstance().getReference().child("users").child(userDB_ID);
-                                FdbRef.setValue(Realusername_string).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                FdbRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful())

@@ -1,17 +1,16 @@
 package com.example.myapplication;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,14 +33,13 @@ public class ChannelActivity_One extends AppCompatActivity {
     DatabaseReference chatnode,childCounterRef;
     private EditText sendText;
     private String sendstring,username;
-    private Button sendbtn;
     private RecyclerView recyclerView;
     private MyAdapter adapter;
     private List<Messages> messagesList;
     long totalChild; //This is used to store last message key from the database;
-    String lastKey="",messageKey="";
-    boolean lastKeySet =true;
-    int y=10,counter=0,counter2=0;
+    String lastKey="notNull",messageKey="";
+    int y=10;
+    int counter=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +52,7 @@ public class ChannelActivity_One extends AppCompatActivity {
         messagesList=new ArrayList<>();
 
         sendText=findViewById(R.id.input_text_msg);
-        sendbtn=findViewById(R.id.msg_send_btn);
+        Button sendbtn = findViewById(R.id.msg_send_btn);
         adapter = new MyAdapter(messagesList);
         recyclerView.setAdapter(adapter);
 
@@ -84,19 +82,19 @@ public class ChannelActivity_One extends AppCompatActivity {
                 if(!messagesList.isEmpty() && !messagesList.contains(m)) {
                     messagesList.add(m);
                     adapter.notifyDataSetChanged();
-                    System.out.println(m.getTextMessage().toString() + "ADDED BY INITIAL LOADER");
+                    System.out.println(Objects.requireNonNull(m).getTextMessage() + "ADDED BY INITIAL LOADER");
                 }
                 else if(messagesList.isEmpty())
                 {
                     messagesList.add(m);
                     adapter.notifyDataSetChanged();
-                    System.out.println(m.getTextMessage().toString() + "ADDED BY INITIAL LOADER WHEN MT");
+                    System.out.println(Objects.requireNonNull(m).getTextMessage() + "ADDED BY INITIAL LOADER WHEN MT");
                 }
 
                 counter++;
                 if(counter==1)
                 {
-                    messageKey=m.getDate();
+                    messageKey= Objects.requireNonNull(m).getDate();
                     System.out.println(messageKey+" << Date taken from initial load");
                 }
 
@@ -105,7 +103,7 @@ public class ChannelActivity_One extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
+                        recyclerView.smoothScrollToPosition(Objects.requireNonNull(recyclerView.getAdapter()).getItemCount());
                     }}, 50);
             }
 
@@ -137,8 +135,14 @@ public class ChannelActivity_One extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
 
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                if(linearLayoutManager.findFirstVisibleItemPosition()==0 && counter==y)
+                if(Objects.requireNonNull(linearLayoutManager).findFirstVisibleItemPosition()==0 && counter==y)
                 {
+                    final Handler handler = new Handler();
+                    //100ms wait to scroll to item after applying changes
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                        }}, 5000);
 
                     if(counter==(y))
                     {
@@ -146,16 +150,23 @@ public class ChannelActivity_One extends AppCompatActivity {
                         y=10;
                         lastKey=messageKey;
                     }
-                    chatnode.orderByChild("date").endAt(messageKey).limitToLast(y).addChildEventListener(new ChildEventListener() {
+                    Query query2=chatnode.orderByChild("date").endAt(messageKey).limitToLast(y);
+                    query2.addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                            System.out.println("CHECKING FOR NULL"+dataSnapshot.getKey());
                             Messages m = dataSnapshot.getValue(Messages.class);
-                            if(!m.getDate().equals(lastKey))
+                            String tmp="new";
+                            tmp=m.getDate();
+                            if(tmp.isEmpty())
+                            {
+                                System.out.println("EMPTY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                            }
+                            else if(!tmp.equals(lastKey)&&!lastKey.isEmpty())
                             {
                                 messagesList.add(counter++, m);
                                 adapter.notifyDataSetChanged();
-                                System.out.println(m.getTextMessage().toString()+" ADDED BY SCROLLER!!!");
+                                System.out.println(m.getTextMessage() +" ADDED BY SCROLLER!!!");
                             }
                             else if(m.getDate().equals(lastKey))
                             {
@@ -205,12 +216,13 @@ public class ChannelActivity_One extends AppCompatActivity {
         Fdb=FirebaseAuth.getInstance();
         FirebaseUser user_now=FirebaseAuth.getInstance().getCurrentUser();
         String userDB_ID= Objects.requireNonNull(user_now).getUid();
-        FdbRef= FirebaseDatabase.getInstance().getReference().child("users").child(userDB_ID);
+        FdbRef= FirebaseDatabase.getInstance().getReference().child("users");
         //fetch username from database
-        FdbRef.addValueEventListener(new ValueEventListener() {
+        FdbRef.child(userDB_ID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                username=dataSnapshot.getValue().toString();
+                Users users=dataSnapshot.getValue(Users.class);
+                username= users.getName();
                 //displayChatMessages();
 
             }

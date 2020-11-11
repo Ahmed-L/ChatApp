@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -45,7 +46,7 @@ public class UserActivity extends AppCompatActivity {
 
         currentUser=FirebaseAuth.getInstance().getCurrentUser();
         String currentUID=currentUser.getUid();
-        FdbRef=FirebaseDatabase.getInstance().getReference().child("users").child(currentUID);
+        FdbRef=FirebaseDatabase.getInstance().getReference().child("users");
         logout_btn=findViewById(R.id.logout_button);
         channelbtn_1=findViewById(R.id.groupchat_btn_1);
         welcome_box=findViewById(R.id.welcome_msg);
@@ -67,10 +68,12 @@ public class UserActivity extends AppCompatActivity {
         current_build.setText(buildSpan);
         current_build.setMovementMethod(LinkMovementMethod.getInstance());
 
-        FdbRef.addValueEventListener(new ValueEventListener() {
+        FdbRef.child(currentUID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String name=dataSnapshot.getValue().toString();
+                Users users=dataSnapshot.getValue(Users.class);
+                String name= users.getName();
+                //String name = dataSnapshot.getValue().toString();
                 String disp="Welcome, "+name;
                 welcome_box.setText(disp);
 
